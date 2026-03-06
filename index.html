@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Codice di Cesare</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="background-animation"></div>
+
+    <!-- ===== HERO SCREEN ===== -->
+    <div id="hero-screen" class="hero-screen">
+        <div class="hero-content">
+            <div class="hero-laurel">🏛️</div>
+            <h1 class="hero-title">Il Codice<br>di Cesare</h1>
+            <p class="hero-subtitle">Impara la crittografia antica usata da Giulio Cesare<br>per proteggere i suoi
+                messaggi militari segreti</p>
+            <div class="scroll-indicator">
+                <span class="scroll-text">Scorri per iniziare l'esercizio</span>
+                <div class="scroll-arrow">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== GIOCO ===== -->
+    <div class="container">
+        <header>
+            <h1>Il Codice di Cesare</h1>
+            <div class="level-indicator" id="level-indicator">Livello <span id="current-level">1</span> / <span
+                    id="total-levels">4</span></div>
+        </header>
+
+        <main id="game-board" class="game-board">
+            <section id="story-section" class="story-panel">
+                <h2 id="level-title">Titolo Livello</h2>
+                <p id="level-description">Descrizione del livello corrente...</p>
+                <div id="guide-panel" class="guide-panel hidden">
+                    <h3>💡 Guida</h3>
+                    <p id="guide-text">Testo della guida passo passo...</p>
+                </div>
+            </section>
+
+            <section id="challenge-section" class="challenge-section">
+                <div class="challenge-box" id="challenge-box">
+                    <h3>Sfida corrente:</h3>
+                    <div class="target-word-container">
+                        <span class="label">Parola:</span>
+                        <div id="target-word" class="target-word">TEST</div>
+                    </div>
+                    <div class="shift-info-container" id="shift-container">
+                        <span class="label">Chiave (scostamento):</span>
+                        <span id="shift-value" class="shift-value">+3</span>
+                    </div>
+                </div>
+
+                <div class="input-section" id="input-section">
+                    <label id="input-label">🔓 Inserisci il testo DECIFRATO:</label>
+                    <div id="wordle-grid" class="wordle-grid" tabindex="0"></div>
+                    <button id="check-btn" class="primary-btn">Verifica Codice</button>
+                    <p id="feedback-msg" class="feedback-msg"></p>
+                </div>
+            </section>
+        </main>
+
+        <div id="victory-screen" class="victory-screen hidden">
+            <h2 id="victory-title">Congratulazioni!</h2>
+            <p id="victory-message">Hai completato questo livello.</p>
+            <button id="next-level-btn" class="primary-btn pulse-anim">Procedi al prossimo livello ➔</button>
+        </div>
+
+        <div id="final-screen" class="final-screen hidden">
+            <h1>Vittoria Assoluta!</h1>
+            <p>Hai decifrato tutti i messaggi e salvato l'Impero Romano. Giulio Cesare sarebbe fiero di te!</p>
+            <button id="restart-btn" class="secondary-btn">Torna a Roma (Riavvia)</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
