@@ -18,59 +18,122 @@ function caesarDecrypt(text, shift) {
 
 // --- Livelli ---
 // Calcoli verificati:
-// Lv1: decrypt FLDR -3 → F(5)-3=2=C, L(11)-3=8=I, D(3)-3=0=A, R(17)-3=14=O → CIAO ✓
-// Lv2: encrypt ROMA +4 → R(17)+4=21=V, O(14)+4=18=S, M(12)+4=16=Q, A(0)+4=4=E → VSQE ✓
-// Lv3: decrypt NHSSV -7 → N(13)-7=6=G, H(7)-7=0=A, S(18)-7=11=L, S(18)-7=11=L, V(21)-7=14=O → GALLO ✓
-// Lv4: encrypt SENATO +5 → S(18)+5=23=X, E(4)+5=9=J, N(13)+5=18=S, A(0)+5=5=F, T(19)+5=24=Y, O(14)+5=19=T → XJSFYT ✓
+// Lv1: decrypt FLDR -3  → F(5)-3=C, L(11)-3=I, D(3)-3=A, R(17)-3=O → CIAO ✓
+// Lv2: encrypt ROMA +4  → R(17)+4=V, O(14)+4=S, M(12)+4=Q, A(0)+4=E → VSQE ✓
+// Lv3: decrypt NHSSV -7 → N(13)-7=G, H(7)-7=A, S·S-7=L·L, V(21)-7=O → GALLO ✓
+// Lv4: encrypt SENATO+5 → S→X,E→J,N→S,A→F,T→Y,O→T → XJSFYT ✓
+// Lv5: decrypt SGXK -6  → S(18)-6=M,G(6)-6=A,X(23)-6=R,K(10)-6=E → MARE ✓
+// Lv6: encrypt PACE +5  → P(15)+5=U,A+5=F,C(2)+5=H,E(4)+5=J → UFHJ ✓
+// Lv7: decrypt XKVC -2  → X(23)-2=V,K(10)-2=I,V(21)-2=T,C(2)-2=A → VITA ✓
+// Lv8: encrypt LUNA +8  → L(11)+8=T,U(20)+8=2=C,N(13)+8=V,A(0)+8=I → TCVI ✓
+// Lv9: decrypt DALOL -11 → D(3)-11+26=S,A(0)-11+26=P,L(11)-11=A,O(14)-11=D,L(11)-11=A → SPADA ✓
 const LEVELS = [
     {
         id: 1,
         title: "Il Messaggero di Cesare",
-        description: "L'anno è il 50 a.C. Sei un giovane soldato nell'esercito di Giulio Cesare. Un messaggero ti consegna un dispaccio urgente, ma è scritto in codice! Cesare stesso ti spiega passo per passo come decifrarlo.",
+        description: "L'anno è il 50 a.C. Sei un giovane soldato nell'esercito di Giulio Cesare. Un messaggero ti consegna un dispaccio urgente scritto in codice! Cesare ti spiega come decifrarlo — ma puoi provare anche subito!",
         mode: "guided_decrypt",
         word: "FLDR",
         shift: 3,
         answer: "CIAO",
         guide: [
-            "📜 Cesare ti spiega: «Il mio cifrario sposta ogni lettera di N posizioni in avanti nell'alfabeto. Per decifrare, fai il contrario: sposta indietro!»",
-            "🔑 Con chiave 3: sposta ogni lettera di 3 posizioni INDIETRO. F→C, L→I, D→A, R→O.",
-            "✍️ Prima lettera: F è la 6ª. 6 - 3 = 3ª lettera = C. Seconda: L è la 12ª. 12 - 3 = 9ª = I.",
-            "✍️ Terza: D è la 4ª. 4 - 3 = 1ª = A. Ultima: R è la 18ª. 18 - 3 = 15ª = O. Metti tutto insieme e scrivi!"
+            "📜 Cesare spiega: «Il mio cifrario sposta ogni lettera di N posizioni in avanti. Per decifrare, fai il contrario: sposta indietro!»",
+            "🔑 Con chiave 3: sposta ogni lettera 3 posizioni INDIETRO. F→C, L→I, D→A, R→O.",
+            "✍️ F è la 6ª lettera → 6-3=3ª=C. L è la 12ª → 12-3=9ª=I.",
+            "✍️ D è la 4ª → 4-3=1ª=A. R è la 18ª → 18-3=15ª=O. Prova a scrivere CIAO!"
         ]
     },
     {
         id: 2,
         title: "Missione al Senato",
-        description: "Bene! Cesare ha bisogno che tu cifri un messaggio urgente per il Senato. Usa la chiave +4 per rendere la parola ROMA illeggibile ai nemici!",
+        description: "Cesare ha bisogno che tu cifri un messaggio urgente per il Senato di Roma. Usa la chiave +4 per rendere la parola ROMA illeggibile ai nemici! I suggerimenti sono lì se ne hai bisogno.",
         mode: "guided_encrypt",
         word: "ROMA",
         shift: 4,
         answer: "VSQE",
         guide: [
-            "📜 Per CIFRARE devi spostare ogni lettera di 4 posizioni IN AVANTI nell'alfabeto.",
-            "🔑 R è la 18ª lettera. 18 + 4 = 22ª = V. Prima lettera cifrata: V.",
-            "✍️ O è la 15ª. 15 + 4 = 19ª = S. M è la 13ª. 13 + 4 = 17ª = Q.",
-            "✍️ Ultima: A è la 1ª. 1 + 4 = 5ª = E. Unisci le lettere: V-S-Q-E e scrivi la risposta!"
+            "📜 Per CIFRARE sposta ogni lettera di 4 posizioni IN AVANTI nell'alfabeto.",
+            "🔑 R(18ª)+4=22ª=V. Prima lettera cifrata: V.",
+            "✍️ O(15ª)+4=19ª=S. M(13ª)+4=17ª=Q.",
+            "✍️ A(1ª)+4=5ª=E. Risultato: V·S·Q·E. Scrivilo!"
         ]
     },
     {
         id: 3,
         title: "Il Messaggio delle Spie",
-        description: "Sei diventato esperto! Le spie galliche hanno intercettato un messaggio. Devi decifrarlo DA SOLO — nessuna guida questa volta. Chiave: 7.",
-        mode: "free_decrypt",
-        word: "NHSSV",
-        shift: 7,
-        answer: "GALLO",
-        guide: []
+        description: "Le spie galliche hanno intercettato un messaggio nemico. Puoi consultare il suggerimento oppure testare subito le tue abilità! Chiave: 6. Decifra la parola.",
+        mode: "guided_decrypt",
+        word: "SGXK",
+        shift: 6,
+        answer: "MARE",
+        guide: [
+            "💡 Decifra spostando ogni lettera 6 posizioni INDIETRO nell'alfabeto.",
+            "🔑 S(19ª)-6=13ª=M. G(7ª)-6=1ª=A.",
+            "✍️ X(24ª)-6=18ª=R. K(11ª)-6=5ª=E. La parola è MARE!"
+        ]
     },
     {
         id: 4,
-        title: "Il Codice Finale",
-        description: "La battaglia finale si avvicina! Cifra il bersaglio strategico usando la chiave +5. Il destino di Roma è nelle tue mani. Nessuno ti aiuterà!",
+        title: "L'Aquila di Roma",
+        description: "La quinta legione ha bisogno di cifrare la posizione del campo base. Proteggi il termine PACE con la chiave +5 prima che il messaggio cada nelle mani nemiche!",
+        mode: "free_encrypt",
+        word: "PACE",
+        shift: 5,
+        answer: "UFHJ",
+        guide: []
+    },
+    {
+        id: 5,
+        title: "Voci dal Fronte",
+        description: "Un soldato ferito ha consegnato un messaggio intercettato ai Galli. La chiave usata è 2. Decifra la parola e scopri cosa volevano nascondere!",
+        mode: "free_decrypt",
+        word: "XKVC",
+        shift: 2,
+        answer: "VITA",
+        guide: []
+    },
+    {
+        id: 6,
+        title: "Il Segnale della Luna",
+        description: "I tuoi alleati aspettano un segnale cifrato questa notte. Cifra la parola LUNA con la chiave +8 e invia il messaggio prima dell'alba!",
+        mode: "guided_encrypt",
+        word: "LUNA",
+        shift: 8,
+        answer: "TCVI",
+        guide: [
+            "📜 Sposta ogni lettera 8 posizioni IN AVANTI. Attenzione: se superi la Z, riparti dalla A!",
+            "🔑 L(12ª)+8=20ª=T. U(21ª)+8=29→29-26=3ª=C (wrap-around!).",
+            "✍️ N(14ª)+8=22ª=V. A(1ª)+8=9ª=I. Risultato: T·C·V·I."
+        ]
+    },
+    {
+        id: 7,
+        title: "Il Tradimento",
+        description: "Un traditore ha mandato informazioni al nemico. Il messaggio cifrato è stato recuperato — la chiave è 11. Trova la parola segreta e smascheralo!",
+        mode: "free_decrypt",
+        word: "DALOL",
+        shift: 11,
+        answer: "SPADA",
+        guide: []
+    },
+    {
+        id: 8,
+        title: "La Battaglia di Alesia",
+        description: "Siamo ad Alesia, 52 a.C. Cesare ti chiede di cifrare il nome della strategia segreta: SENATO. La chiave è +5. Ogni secondo conta!",
         mode: "free_encrypt",
         word: "SENATO",
         shift: 5,
         answer: "XJSFYT",
+        guide: []
+    },
+    {
+        id: 9,
+        title: "L'Eredità di Cesare",
+        description: "Cesare è caduto. L'ultimo messaggio del grande generale è cifrato con chiave 7. Decifra il suo testamento segreto e consegnalo all'erede legittimo. Questo è il tuo momento!",
+        mode: "free_decrypt",
+        word: "NHSSV",
+        shift: 7,
+        answer: "GALLO",
         guide: []
     }
 ];
@@ -318,14 +381,6 @@ function checkAnswer() {
         return;
     }
 
-    // Per livelli guidati: obbliga a leggere tutta la guida
-    if (level.guide.length > 0 && !guideFinished) {
-        showFeedback('💡 Leggi prima tutti i suggerimenti della guida!', 'error');
-        nextHintBtn.classList.add('pulse-hint');
-        setTimeout(() => nextHintBtn.classList.remove('pulse-hint'), 1000);
-        return;
-    }
-
     if (userAnswer === correctAnswer) {
         handleCorrectAnswer(level);
     } else {
@@ -413,9 +468,14 @@ function showFinalVictory() {
 
 function getLevelVictoryMessage(id) {
     return [
-        "Eccellente! Hai decifrato il tuo primo messaggio segreto. Cesare è compiaciuto!",
-        "Straordinario! Il tuo messaggio cifrato ha raggiunto il Senato. La tua abilità cresce.",
-        "Incredibile! Hai smascherato i piani nemici senza alcuna guida. Sei un agente prezioso."
+        "Eccellente! Hai decifrato il tuo primo messaggio segreto. Cesare è orgoglioso di te!",
+        "Straordinario! Il tuo messaggio cifrato ha raggiunto il Senato sano e salvo.",
+        "Bene! Hai decifrato il messaggio nemico. Le informazioni sono al sicuro.",
+        "Perfetto! La posizione del campo base è ora protetta dai tuoi nemici.",
+        "Bravo! Hai scoperto cosa volevano nascondere i Galli. La parola era VITA.",
+        "Impressionante! Il segnale notturno è partito. I tuoi alleati sono avvertiti.",
+        "Giustizia è fatta! Hai smascherato il traditore con il codice segreto.",
+        "Roma non cade! Il piano di battaglia è protetto. Cesare ti elogerà pubblicamente.",
     ][id - 1] || "Missione completata!";
 }
 
