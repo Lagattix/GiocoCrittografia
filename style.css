@@ -267,7 +267,49 @@ h1 {
     user-select: none;
     text-transform: uppercase;
     position: relative;
+    flex-shrink: 0;
 }
+
+/* Modificatori per griglie molto lunghe (fino a 130 caratteri) */
+.wordle-grid {
+    flex-wrap: wrap;
+    /* per permettere a testi lunghi di andare a capo */
+    max-width: 100%;
+}
+
+.wordle-grid.size-large .wordle-cell {
+    width: 38px;
+    height: 38px;
+    font-size: 1.2rem;
+    border-radius: 6px;
+    border-width: 1.5px;
+}
+
+.wordle-grid.size-huge .wordle-cell {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    border-width: 1px;
+}
+
+/* Cella Spazio (per le frasi decifrabili) */
+.wordle-cell.space-cell {
+    background: transparent;
+    border-color: transparent;
+    cursor: default;
+    width: 25px;
+    /* Spazio tra parole */
+}
+
+.wordle-grid.size-large .wordle-cell.space-cell {
+    width: 15px;
+}
+
+.wordle-grid.size-huge .wordle-cell.space-cell {
+    width: 10px;
+}
+
 
 /* Box selezionato (cursore attivo) */
 .wordle-cell.active {

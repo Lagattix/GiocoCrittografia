@@ -135,6 +135,116 @@ const LEVELS = [
         shift: 7,
         answer: "GALLO",
         guide: []
+    },
+    {
+        id: 10,
+        title: "L'Impero Espande",
+        description: "L'impero continua a crescere. Cifra la parola IMPERO per il rapporto di Cesare. Chiave +7.",
+        mode: "free_encrypt",
+        word: "IMPERO",
+        shift: 7,
+        answer: "PTWLYV",
+        guide: []
+    },
+    {
+        id: 11,
+        title: "Il Trionfo",
+        description: "Un generale torna con la vittoria in pugno. Decifra questo messaggio trovato nelle sue tasche. Chiave +12.",
+        mode: "free_decrypt",
+        word: "HUFFADUM",
+        shift: 12,
+        answer: "VITTORIA",
+        guide: []
+    },
+    {
+        id: 12,
+        title: "Le Formazioni",
+        description: "Inizia a decifrare intere frasi! Fai attenzione agli spazi, serviranno anche nella risposta! Chiave: 22.",
+        mode: "free_decrypt",
+        word: "HACEKJA NKIWJW",
+        shift: 22,
+        answer: "LEGIONE ROMANA",
+        guide: []
+    },
+    {
+        id: 13,
+        title: "Il Nome del Dittatore",
+        description: "Cifra il nome del più celebre generale, GIULIO CESARE, prima che i cospiratori lo scoprano! Chiave +5.",
+        mode: "free_encrypt",
+        word: "GIULIO CESARE",
+        shift: 5,
+        answer: "LNZQNT HJXFWJ",
+        guide: []
+    },
+    {
+        id: 14,
+        title: "Le Idi di Marzo",
+        description: "Si avvicina una tempesta. Decifra la celebre frase intercettata. Chiave 18.",
+        mode: "free_decrypt",
+        word: "AD VSVG W LJSLLG",
+        shift: 18,
+        answer: "IL DADO E TRATTO",
+        guide: []
+    },
+    {
+        id: 15,
+        title: "Il Rapporto Breve",
+        description: "Cesare invia un messaggio conciso dopo una grande vittoria in Asia. Cifralo con chiave +13.",
+        mode: "free_encrypt",
+        word: "VENI VIDI VICI",
+        shift: 13,
+        answer: "IRAV IVQV IVPV",
+        guide: []
+    },
+    {
+        id: 16,
+        title: "La Tattica Suprema",
+        description: "Decifra questo comandamento politico e diplomatico per mantenere il controllo sui popoli vinti. Chiave: 3.",
+        mode: "free_decrypt",
+        word: "GLYLGL HW LPSHUD",
+        shift: 3,
+        answer: "DIVIDI ET IMPERA",
+        guide: []
+    },
+    {
+        id: 17,
+        title: "Il Coraggio",
+        description: "Cifra questo proverbio latino adorato dalle truppe romane, chiave +21.",
+        mode: "free_encrypt",
+        word: "LA FORTUNA AIUTA",
+        shift: 21,
+        answer: "GV AJMOPIV VDPOV",
+        guide: []
+    },
+    {
+        id: 18,
+        title: "Una Città Eterna",
+        description: "Cifra questa affermazione rassicurante in caso di tempi difficili. Chiave +10.",
+        mode: "free_encrypt",
+        word: "ROMA NON FU COSTRUITA IERI",
+        shift: 10,
+        answer: "BYWK XYX PE MYCDBESDK SOBS",
+        guide: []
+    },
+    {
+        id: 19,
+        title: "L'Arte della Guerra",
+        description: "Decifra la strategia fondamentale della Repubblica Romana. La chiave è 6.",
+        mode: "free_decrypt",
+        word: "YK BAUO RG VGIK VXKVGXG RG MAKXXG",
+        shift: 6,
+        answer: "SE VUOI LA PACE PREPARA LA GUERRA",
+        guide: []
+    },
+    {
+        id: 20,
+        title: "L'Ultimo Canto di Roma",
+        description: "Questa è la prova finale! Un testo segreto di quattro righe. Nessuno è arrivato fin qui. Il Senato ti osserva, la chiave per decifrare l'intero testo è 17. Mostra cosa sai fare!",
+        mode: "free_decrypt",
+        word: "JFKKF C FDSIR UVCCV RHLZCV U FIF CV JHLRUIV RMREQREF ZE JZCVEQZF CR MZKKFIZR JRIR ZC EFJKIF GIVDZF IFDR UFDZEVIR ZC DFEUF ZEKVIF",
+        shift: 17,
+        answer: "SOTTO L OMBRA DELLE AQUILE D ORO LE SQUADRE AVANZANO IN SILENZIO LA VITTORIA SARA IL NOSTRO PREMIO ROMA DOMINERA IL MONDO INTERO",
+        guide: []
     }
 ];
 
@@ -183,20 +293,38 @@ totalLevelsEl.textContent = LEVELS.length;
 // WORDLE GRID — Costruzione e gestione
 // =====================================================
 
-function buildWordleGrid(length) {
+function buildWordleGrid(answer) {
     wordleGrid.innerHTML = '';
+    const length = answer.length;
     wordleLetters = new Array(length).fill('');
     wordleLength = length;
-    activeCell = 0;
+    activeCell = -1;
+
+    // Regola la dimensione delle celle se ci sono troppe lettere
+    wordleGrid.className = 'wordle-grid';
+    if (length > 60) {
+        wordleGrid.classList.add('size-huge');
+    } else if (length > 25) {
+        wordleGrid.classList.add('size-large');
+    }
 
     for (let i = 0; i < length; i++) {
         const cell = document.createElement('div');
-        cell.className = 'wordle-cell' + (i === 0 ? ' active' : '');
+        if (answer[i] === ' ') {
+            cell.className = 'wordle-cell space-cell';
+            wordleLetters[i] = ' ';
+        } else {
+            cell.className = 'wordle-cell';
+            cell.addEventListener('click', () => focusCell(i));
+            if (activeCell === -1) activeCell = i; // la prima cella non vuota
+        }
         cell.dataset.index = i;
-        cell.addEventListener('click', () => focusCell(i));
         wordleGrid.appendChild(cell);
     }
-    wordleGrid.focus();
+
+    if (activeCell !== -1 && wordleGrid.children[activeCell]) {
+        wordleGrid.children[activeCell].classList.add('active');
+    }
 }
 
 function buildKeyboard() {
@@ -239,37 +367,52 @@ function focusCell(index) {
 function refreshCells() {
     const cells = wordleGrid.querySelectorAll('.wordle-cell');
     cells.forEach((cell, i) => {
-        // Mantieni solo classe base + stati speciali (no active/filled se error/success applicati)
+        // Mantieni solo classe base + stati speciali
         const hasSpecial = cell.classList.contains('error') || cell.classList.contains('success');
         if (!hasSpecial) {
             cell.className = 'wordle-cell';
-            if (wordleLetters[i]) cell.classList.add('filled');
+            if (LEVELS[currentLevelIndex].answer[i] === ' ') cell.classList.add('space-cell');
+            if (wordleLetters[i] && wordleLetters[i] !== ' ') cell.classList.add('filled');
             if (i === activeCell) cell.classList.add('active');
-            cell.textContent = wordleLetters[i];
+            cell.textContent = wordleLetters[i] !== ' ' ? wordleLetters[i] : '';
         }
     });
 }
 
 function handleKeyPress(key) {
+    const ans = LEVELS[currentLevelIndex].answer;
     if (key === '⌫') {
-        // Backspace
-        if (wordleLetters[activeCell]) {
+        let found = false;
+        if (wordleLetters[activeCell] && ans[activeCell] !== ' ') {
             wordleLetters[activeCell] = '';
-            refreshCells();
-        } else if (activeCell > 0) {
-            activeCell--;
-            wordleLetters[activeCell] = '';
-            refreshCells();
+            found = true;
+        } else {
+            let orig = activeCell;
+            while (activeCell > 0) {
+                activeCell--;
+                if (ans[activeCell] !== ' ') {
+                    wordleLetters[activeCell] = '';
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) activeCell = orig;
         }
+        refreshCells();
     } else if (key === '✓') {
         checkAnswer();
     } else if (/^[A-Z]$/.test(key)) {
-        wordleLetters[activeCell] = key;
-        refreshCells();
-        if (activeCell < wordleLength - 1) {
-            activeCell++;
-            refreshCells();
+        if (ans[activeCell] !== ' ') {
+            wordleLetters[activeCell] = key;
         }
+        refreshCells();
+        while (activeCell < wordleLength - 1) {
+            activeCell++;
+            if (ans[activeCell] !== ' ') {
+                break;
+            }
+        }
+        refreshCells();
     }
 }
 
@@ -315,7 +458,7 @@ function loadLevel(index) {
         : '🔓 Inserisci il testo DECIFRATO:';
 
     // Griglia Wordle
-    buildWordleGrid(level.answer.length);
+    buildWordleGrid(level.answer);
     buildKeyboard();
 
     // Guida
@@ -345,8 +488,6 @@ function loadLevel(index) {
         gameBoard.style.opacity = '1';
         gameBoard.style.transform = 'translateY(0)';
     });
-
-    wordleGrid.focus();
 }
 
 // --- Navigazione guida ---
@@ -439,7 +580,7 @@ function handleCorrectAnswer(level) {
             } else {
                 showLevelVictory(level);
             }
-        }, 450);
+        }, 500); // Leggermente ritardato per la fine dell'animazione
     });
 }
 
@@ -467,7 +608,7 @@ function showFinalVictory() {
 }
 
 function getLevelVictoryMessage(id) {
-    return [
+    const messages = [
         "Eccellente! Hai decifrato il tuo primo messaggio segreto. Cesare è orgoglioso di te!",
         "Straordinario! Il tuo messaggio cifrato ha raggiunto il Senato sano e salvo.",
         "Bene! Hai decifrato il messaggio nemico. Le informazioni sono al sicuro.",
@@ -476,7 +617,20 @@ function getLevelVictoryMessage(id) {
         "Impressionante! Il segnale notturno è partito. I tuoi alleati sono avvertiti.",
         "Giustizia è fatta! Hai smascherato il traditore con il codice segreto.",
         "Roma non cade! Il piano di battaglia è protetto. Cesare ti elogerà pubblicamente.",
-    ][id - 1] || "Missione completata!";
+        "L'ultimo testamento è stato consegnato. Augusto ti onorerà.",
+        "L'Impero non smette di espandersi, i confini sono lontani come non mai.",
+        "Una nuova vittoria! I soldati cantano per le piazze.",
+        "Perfetto! Anche comunicazioni complesse iniziano ad essere protette facilmente.",
+        "Il nome del Generale ora è al sicuro.",
+        "Il fato ha scelto il proprio percorso, indietro non si torna.",
+        "La brevità del generale stupì tutti.",
+        "Controllare la politica significa gestire l'impero a dovere.",
+        "In guerra solo i coraggiosi sorridono al fato.",
+        "C'è tempo per erigere grandi monumenti, Roma ne è la prova.",
+        "Prevenire una guerra significa armarsi prima.",
+        "Ce l'hai fatta! Hai decifrato l'opera magna della crittografia di Cesare!"
+    ];
+    return messages[id - 1] || "Missione completata eccellentemente!";
 }
 
 // --- Bottoni navigazione ---
